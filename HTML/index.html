@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body onload="disp()">
+
+
+ <script>
+    var id=0;
+    function disp(){
+        document.write("CRUD using REST API")
+        document.write("<table style='border:1px solid red;'><tr><th>Name</th><th>Age</th></tr>");
+        fetch('http://127.0.0.1:8000/emplist/')
+        .then(response => {
+            return response.json();
+        })
+        .then(user =>{
+            for(let i=0;i<user.length;i++)
+            {
+            document.write("<tr><td>"+user[i].name+"</td><td>"+user[i].age+"</td>");
+            document.write("<td><button onclick='datadelete("+user[i].id+")'>Delete</button></td>");
+            document.write("<td><button onclick='dataupdate("+user[i].id+")'>Update</button></td></tr>");
+            }
+            document.write("</table> <button onclick='createfn()'>CREATE</button>");
+        })
+    }
+
+    function datadelete(id)
+    {
+        const deleted = fetch(`http://127.0.0.1:8000/empdelete/${id}`,
+        {
+            method: "DELETE",
+            headers: { 'Content-Type': 'application/json' }
+        });
+        window.location.reload();
+    }
+
+    function dataupdate(id)
+    {
+        window.location.href="updatepage.html?id="+id;
+    }
+    function createfn()
+    {
+        window.location.href="createpage.html"; 
+    }
+ </script>   
+
+</body>
+</html>

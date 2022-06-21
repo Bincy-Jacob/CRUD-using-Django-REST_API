@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body onload="disp()">
+    <input type="text" name="" id="name" placeholder="Name" >
+    <input type="number" name="" id="age" placeholder="Age">
+    <button type="submit" onclick="savefn()">Submit</button>
+
+
+    <script>
+var baseUrl = (window.location).href; // You can also use document.URL
+var id = baseUrl.substring(baseUrl.lastIndexOf('=') + 1);
+
+        function disp()
+        {
+            fetch(`http://127.0.0.1:8000/emplistid/${id}`)
+        .then(response => {
+            return response.json();
+        })
+        .then(user =>{
+            document.getElementById('name').value=user.name;
+            document.getElementById('age').value=user.age;
+
+        });
+        }
+        function savefn()
+        {
+            let name= document.getElementById('name').value;
+            let age= document.getElementById('age').value;
+            let data=({"name":name,"age":age});
+            const up = fetch(`http://127.0.0.1:8000/empupdate/${id}/`,
+            {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: { 'Content-Type': 'application/json' }
+            }) .then((data) => console.log(data));
+            window.location.href="index.html";
+        }
+    </script>
+</body>
+</html>
